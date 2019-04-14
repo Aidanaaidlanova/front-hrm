@@ -33,6 +33,8 @@ class PersonalInfo extends Component{
         this.handleDepartmentChange = this.handleDepartmentChange.bind(this);
         this.handleGradYearChange = this.handleGradYearChange.bind(this);
         this.handleExperienceChange = this.handleExperienceChange.bind(this);
+        this.handleHobbyChange = this.handleHobbyChange.bind(this);
+        this.handleReasonChange = this.handleReasonChange.bind(this);
 	}
 
 
@@ -80,7 +82,14 @@ class PersonalInfo extends Component{
         console.log('Experience was changed', event.target.value);
         this.setState({experience: event.target.value});
     }
-
+     handleHobbyChange(event){
+        console.log('Hobby was changed', event.target.value);
+        this.setState({hobby: event.target.value});
+    }
+    handleReasonChange(event){
+        console.log('Reason was changed', event.target.value);
+        this.setState({reason: event.target.value});
+    }
 
 
     componentDidMount() {
@@ -130,13 +139,16 @@ class PersonalInfo extends Component{
         postt.append('university', this.state.university);
         postt.append('grad_year', this.state.grad_year);
         postt.append('experience', this.state.experience);
+        postt.append('hobby', this.state.hobby);
+        postt.append('reason', this.state.reason);
 
-        fetch(`${link}/application/`, {
+        fetch(`${link}/application`, {
             method: 'POST', // or 'PUT'
             body: postt, // data can be `string` or {object}!
         })
     }
-
+  
+        
 	render() {
         return (
         	<div>
@@ -157,17 +169,17 @@ class PersonalInfo extends Component{
         			<p class = 'block_text'>Личные данные</p>
         		</div>
         		<div class = 'block2'>
-        			<p class = 'block_text'>О вас</p>
+        			<p class = 'block_text1'>О вас</p>
         		</div>
         		<div class = 'block3'>
-        			<p class = 'block_text'>
+        			<p class = 'block_text2'>
         					Дополнительные вопросы</p>
         		</div>
 
         		<h3 class = 'field_text'>
         							Заполните поля
         		</h3>
-        		<div>
+        		<div >
         		<form onSubmit={this.handleSubmit}>
         		<div class = 'field'>
                     <input class ="field_name"
@@ -216,9 +228,10 @@ class PersonalInfo extends Component{
 
                     <input class ="field_dob"
                            type="date"
+              
                            name = "Dob"
                            required
-                           placeholder="Дата рождения (Год-месяц-число)"
+                           placeholder="Дата рождения "
                            pattern="[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}"
                            value={this.state.dob}
                            onChange={this.handleDobChange}
@@ -239,7 +252,7 @@ class PersonalInfo extends Component{
                            type="text"
                            name = "grad_year"
                            required
-                           placeholder="Год обучения"
+                           placeholder="Дата выпуска"
                            pattern="[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}"
                            value={this.state.grad_year}
                            onChange={this.handleGradYearChange}
@@ -258,10 +271,48 @@ class PersonalInfo extends Component{
                            value={this.state.experience}
                            onChange={this.handleExperienceChange}
                     />
-                     <button class="button_next">ОТПРАВИТЬ</button>
+                    </div>
+                    <div class = 'questions'>
+                    <textarea class ="field_quest1"
+                           type = "text"
+                           name = "hobby"
+                           required
+                           placeholder="Почему вы решили подать в Необис?"
+                           minLength={1}
+                           value={this.state.hobby}
+                           onChange={this.handleHobbyChange}
+                    />
+                  
+                    <textarea class ="field_quest2"
+                           type = "text"
+                           name = "reason"
+                           required
+                           placeholder="Почему вы выбрали такое направление?"
+                           minLength={1}
+                           value={this.state.reason}
+                           onChange={this.handleReasonChange}
+                    />
+                   
+                     <button class="button_send">ОТПРАВИТЬ</button>
                     </div>
                     </form>
-                     <button onClick ={()=>document.getElementsByClassName("about_you")[0].style.visibility= 'visible'}  class="button_next">ДАЛЕЕ</button>
+                     <button onClick ={()=>{document.getElementsByClassName("about_you")[0].style.visibility= 'visible';
+                     document.getElementsByClassName("button_next")[0].style.visibility= 'hidden';
+                     document.getElementsByClassName("button_nextto")[0].style.visibility= 'visible';
+                     document.getElementsByClassName("block2")[0].style.background = '#32B482';
+                 	 document.getElementsByClassName("block1")[0].style.background = '#FFFFFF';
+                 	 document.getElementsByClassName("block_text")[0].style.color = '#E6E6E6';
+                 	 document.getElementsByClassName("block_text1")[0].style.color = '#FFFFFF'
+                 	} }class="button_next">ДАЛЕЕ</button>
+                     <button onClick ={()=>{document.getElementsByClassName("about_you")[0].style.visibility= 'hidden';
+                     document.getElementsByClassName("questions")[0].style.visibility= 'visible';
+                     document.getElementsByClassName("button_nextto")[0].style.visibility= 'hidden';
+                     document.getElementsByClassName("button_send")[0].style.visibility= 'visible';
+                     document.getElementsByClassName("block3")[0].style.background = '#32B482';
+                 	 document.getElementsByClassName("block2")[0].style.background = '#FFFFFF';
+                 	 document.getElementsByClassName("block_text1")[0].style.color = '#E6E6E6';
+                 	 document.getElementsByClassName("block_text2")[0].style.color = '#FFFFFF'} }class="button_nextto">ДАЛЕЕ</button>
+
                      </div>
         	</div>
            )
